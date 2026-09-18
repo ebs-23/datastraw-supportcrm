@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Datastraw Support CRM</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 18px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .top-bar h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    button {
+      border: none;
+      border-radius: 7px;
+      padding: 11px 18px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .primary-btn {
+      background: #111827;
+      color: white;
+    }
+
+    .secondary-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .filters {
+      background: white;
+      padding: 18px;
+      border-radius: 10px;
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #e5e7eb;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search {
+      flex: 1;
+    }
+
+    .status-filter {
+      width: 180px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th {
+      background: #f9fafb;
+      font-size: 13px;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    tr.clickable {
+      cursor: pointer;
+    }
+
+    tr.clickable:hover {
+      background: #f9fafb;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .open {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .progress {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .closed {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .form-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 25px;
+      max-width: 700px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .detail-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    .detail-title {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .ticket-id {
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    .detail-section {
+      margin-bottom: 25px;
+    }
+
+    .detail-section h3 {
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .notes {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 15px;
+    }
+
+    .note {
+      padding: 12px;
+      background: #f9fafb;
+      border-radius: 7px;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 7px;
+      display: none;
+    }
+
+    .success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    @media (max-width: 700px) {
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .status-filter {
+        width: 100%;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 9px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="logo">
+      Datastraw Support CRM
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HOME -->
+    <section id="homePage">
+
+      <div class="top-bar">
+
+        <h1>Support Tickets</h1>
+
+        <button
+          class="primary-btn"
+          onclick="showCreatePage()">
+          + Create Ticket
+        </button>
+
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <div class="filters">
+
+        <input
+          id="searchInput"
+          class="search"
+          type="text"
+          placeholder="Search by ticket ID, name, email or description..."
+          oninput="loadTickets()">
+
+        <select
+          id="statusFilter"
+          class="status-filter"
+          onchange="loadTickets()">
+
+          <option value="All">All Statuses</option>
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Closed">Closed</option>
+
+        </select>
+
+      </div>
+
+      <div class="card">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Ticket ID</th>
+              <th>Customer</th>
+              <th>Subject</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="ticketTableBody">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+
+    <!-- CREATE -->
+    <section id="createPage" class="hidden">
+
+      <div class="top-bar">
+
+        <h1>Create Ticket</h1>
+
+        <button
+          class="secondary-btn"
+          onclick="showHomePage()">
+          ← Back
+        </button>
+
+      </div>
+
+      <div class="form-card">
+
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input id="customerName" type="text">
+        </div>
+
+        <div class="form-group">
+          <label>Customer Email</label>
+          <input id="customerEmail" type="email">
+        </div>
+
+        <div class="form-group">
+          <label>Subject</label>
+          <input id="subject" type="text">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description"></textarea>
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            class="primary-btn"
+            onclick="createTicket()">
+            Create Ticket
+          </button>
+
+          <button
+            class="secondary-btn"
+            onclick="showHomePage()">
+            Cancel
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DETAILS -->
+    <section id="detailPage" class="hidden">
+
+      <div class="top-bar">
+
+        <h1>Ticket Details</h1>
+
+        <button
+          class="secondary-btn"
+          onclick="showHomePage()">
+          ← Back
+        </button>
+
+      </div>
+
+      <div id="detailContent"></div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+    function showHomePage() {
+
+      document
+        .getElementById("homePage")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("createPage")
+        .classList.add("hidden");
+
+      document
+        .getElementById("detailPage")
+        .classList.add("hidden");
+
+      loadTickets();
+    }
+
+
+    function showCreatePage() {
+
+      document
+        .getElementById("homePage")
+        .classList.add("hidden");
+
+      document
+        .getElementById("createPage")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("detailPage")
+        .classList.add("hidden");
+
+    }
+
+
+    function loadTickets() {
+
+      const search =
+        document.getElementById("searchInput").value;
+
+      const status =
+        document.getElementById("statusFilter").value;
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+
+          if (!result.success) {
+            showMessage(result.error, true);
+            return;
+          }
+
+          renderTickets(result.data);
+
+        })
+        .withFailureHandler(function(error) {
+
+          showMessage(error.message, true);
+
+        })
+        .handleApiRequest("list", {
+          search: search,
+          status: status
+        });
+
+    }
+
+
+    function renderTickets(tickets) {
+
+      const tbody =
+        document.getElementById("ticketTableBody");
+
+      if (!tickets.length) {
+
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center;">
+              No tickets found.
+            </td>
+          </tr>
+        `;
+
+        return;
+      }
+
+      tbody.innerHTML = tickets.map(function(ticket) {
+
+        return `
+          <tr
+            class="clickable"
+            onclick="openTicket('${ticket.ticket_id}')">
+
+            <td>
+              <strong>${escapeHtml(ticket.ticket_id)}</strong>
+            </td>
+
+            <td>
+              ${escapeHtml(ticket.customer_name)}
+            </td>
+
+            <td>
+              ${escapeHtml(ticket.subject)}
+            </td>
+
+            <td>
+              <span class="badge ${statusClass(ticket.status)}">
+                ${escapeHtml(ticket.status)}
+              </span>
+            </td>
+
+            <td>
+              ${escapeHtml(ticket.created_at)}
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+
+    }
+
+
+    function statusClass(status) {
+
+      if (status === "Open") {
+        return "open";
+      }
+
+      if (status === "In Progress") {
+        return "progress";
+      }
+
+      return "closed";
+
+    }
+
+
+    function createTicket() {
+
+      const data = {
+
+        customer_name:
+          document.getElementById("customerName").value,
+
+        customer_email:
+          document.getElementById("customerEmail").value,
+
+        subject:
+          document.getElementById("subject").value,
+
+        description:
+          document.getElementById("description").value
+
+      };
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          if (!result.success) {
+
+            showMessage(result.error, true);
+            return;
+
+          }
+
+          alert(
+            "Ticket created: " +
+            result.data.ticket_id
+          );
+
+          document.getElementById("customerName").value = "";
+          document.getElementById("customerEmail").value = "";
+          document.getElementById("subject").value = "";
+          document.getElementById("description").value = "";
+
+          showHomePage();
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          showMessage(error.message, true);
+
+        })
+
+        .handleApiRequest("create", data);
+
+    }
+
+
+    function openTicket(ticketId) {
+
+      document
+        .getElementById("homePage")
+        .classList.add("hidden");
+
+      document
+        .getElementById("createPage")
+        .classList.add("hidden");
+
+      document
+        .getElementById("detailPage")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("detailContent").innerHTML =
+        "<p>Loading ticket...</p>";
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          if (!result.success) {
+
+            document
+              .getElementById("detailContent")
+              .innerHTML =
+              `<div class="message error"
+                    style="display:block;">
+                    ${escapeHtml(result.error)}
+               </div>`;
+
+            return;
+
+          }
+
+          renderTicketDetail(result.data);
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          document
+            .getElementById("detailContent")
+            .innerHTML =
+            `<div class="message error"
+                  style="display:block;">
+                  ${escapeHtml(error.message)}
+             </div>`;
+
+        })
+
+        .handleApiRequest("detail", {
+          ticket_id: ticketId
+        });
+
+    }
+
+
+    function renderTicketDetail(ticket) {
+
+      const notesHtml =
+        ticket.notes.length
+          ? ticket.notes.map(function(note) {
+
+              return `
+                <div class="note">
+                  <div>
+                    ${escapeHtml(note.note_text)}
+                  </div>
+                  <small>
+                    ${escapeHtml(note.created_at)}
+                  </small>
+                </div>
+              `;
+
+            }).join("")
+          : "<p>No notes yet.</p>";
+
+
+      document
+        .getElementById("detailContent")
+        .innerHTML = `
+
+          <div class="detail-card">
+
+            <div class="ticket-id">
+              ${escapeHtml(ticket.ticket_id)}
+            </div>
+
+            <div class="detail-title">
+              ${escapeHtml(ticket.subject)}
+            </div>
+
+            <div class="detail-section">
+
+              <h3>Customer</h3>
+
+              <p>
+                <strong>
+                  ${escapeHtml(ticket.customer_name)}
+                </strong>
+              </p>
+
+              <p>
+                ${escapeHtml(ticket.customer_email)}
+              </p>
+
+            </div>
+
+            <div class="detail-section">
+
+              <h3>Description</h3>
+
+              <p>
+                ${escapeHtml(ticket.description)}
+              </p>
+
+            </div>
+
+            <div class="detail-section">
+
+              <h3>Status</h3>
+
+              <select id="detailStatus">
+
+                <option
+                  value="Open"
+                  ${ticket.status === "Open" ? "selected" : ""}>
+                  Open
+                </option>
+
+                <option
+                  value="In Progress"
+                  ${ticket.status === "In Progress" ? "selected" : ""}>
+                  In Progress
+                </option>
+
+                <option
+                  value="Closed"
+                  ${ticket.status === "Closed" ? "selected" : ""}>
+                  Closed
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="detail-section">
+
+              <h3>Notes</h3>
+
+              <div class="notes">
+                ${notesHtml}
+              </div>
+
+            </div>
+
+            <div class="detail-section">
+
+              <h3>Add Note</h3>
+
+              <textarea
+                id="newNote"
+                placeholder="Add a note..."></textarea>
+
+            </div>
+
+            <button
+              class="primary-btn"
+              onclick="updateTicket('${ticket.ticket_id}')">
+              Update Ticket
+            </button>
+
+          </div>
+
+        `;
+
+    }
+
+
+    function updateTicket(ticketId) {
+
+      const status =
+        document.getElementById("detailStatus").value;
+
+      const notes =
+        document.getElementById("newNote").value;
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          if (!result.success) {
+
+            alert(result.error);
+            return;
+
+          }
+
+          alert("Ticket updated successfully.");
+
+          openTicket(ticketId);
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          alert(error.message);
+
+        })
+
+        .handleApiRequest("update", {
+          ticket_id: ticketId,
+          status: status,
+          notes: notes
+        });
+
+    }
+
+
+    function showMessage(message, isError) {
+
+      const element =
+        document.getElementById("message");
+
+      element.textContent = message;
+
+      element.className =
+        "message " +
+        (isError ? "error" : "success");
+
+      element.style.display = "block";
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    // Load tickets when page opens
+    window.onload = function() {
+      loadTickets();
+    };
+
+  </script>
+
+</body>
+
+</html>
